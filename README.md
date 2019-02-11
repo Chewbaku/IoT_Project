@@ -3,10 +3,10 @@ Projet IoT ISEN
 Nous allons développer dans cette branche et pas la master !!  
 
 1) Serveur Mqtt pour le broker sous mosquitto  
-  Adresse du serveur :  
-  Port :  
+  Adresse du serveur : 192.168.43.79  
+  Port : 1883
 
-  #Attention, a executer en admin  
+  Attention, a executer en admin  
     - Démarrer le Serveur  
         mosquitto.exe -c mosquitto.conf -v  
     - Subscribe manuellement à un ou plusieurs topics  
