@@ -18,18 +18,18 @@ Nous allons développer dans cette branche et pas la master !!
         mosquitto.conf  
 
 2) Device - Arduino  
-  A) Connexion au broker Mqtt en WiFi (Esp2286)  
+  A) Connexion au broker Mqtt en WiFi (Esp8266)  
     Emission sur 6 topics:  
     #Attention taux de rafraichissement différents !  
-      - Temperature  
-      - Humidité  
+      - Temperature extérieure  
+      - Humidité extérieure  
       - Pression   
       - Vent  
       - Sunrise  
       - Sunset  
 
   B) Récupération des données du capteur local  
-    #Code Arduino avec pinMode.....  
+    Capteur DHT 11 -> pin D1, 3V et GND  
     - Temperature ambiante  
     - Humidité ambiante  
 
