@@ -1,7 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
+#include "DHT.h"
 
-//Declaration Network
+//Network Declaration
 const char* ssid     = "OnePlus3t";
 const char* password = "promo60rpz";
 const char* ServerAdress = "192.168.43.79";
@@ -9,13 +10,22 @@ int port = 1883;
 WiFiClient WiFiclient;
 PubSubClient client(WiFiclient);
 
+//DHT Sensor Declaration
+#define DHTPin 5 //for pin D1 on Esp8266
+#define DHTTYPE DHT11 //for DHT11 sensor
+DHT dht(DHTPin, DHTTYPE);
+
 //Variables
 unsigned long lastMillis = 0;
 
 void setup() {
-  //Network init
   Serial.begin(115200);
   delay(10);
+
+  //DHT init
+  dht.begin();
+
+  //Network init
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -78,17 +88,27 @@ void loop() {
 //end of loop
 
 char* getTemp(){
-  String tmp = String(random(-5, 35));
-  char* temperature = "";
-  tmp.toCharArray(temperature, tmp.length()+1);
-  return temperature;
+  float t = dht.readTemperature();
+  if (isnan(t)){
+    Serial.println("Failed to read from DHT sensor!");
+  }else {
+    String tmp = String(t);
+    char* temperature = "";
+    tmp.toCharArray(temperature, tmp.length()+1);
+    return temperature;
+  }
 }
 
 char* getHumidity(){
-  String tmp = String(random(0, 100));
-  char* humidity = "";
-  tmp.toCharArray(humidity, tmp.length()+1);
-  return humidity;
+  float t = dht.readHumidity();
+  if (isnan(t)){
+    Serial.println("Failed to read from DHT sensor!");
+  }else {
+    String tmp = String(t);
+    char* humidity = "";
+    tmp.toCharArray(humidity, tmp.length()+1);
+    return humidity;
+  }
 }
 
 char* getPression(){
