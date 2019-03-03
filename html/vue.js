@@ -162,31 +162,51 @@ var app = new Vue({
 
       switch (this.topic) {
         case "temperature_indoor":
-          this.tempIn.push(parseFloat(message.payloadString));
+          if(this.tempIn.length > 12){
+            this.tempIn.shift();
+          }else {
+            this.tempIn.push(parseFloat(message.payloadString));
+          }
           console.log('temperature_indoor :', message.payloadString);
           break;
         case "humidity_indoor":
-          this.humIn.push(parseFloat(message.payloadString));
+          if(this.humIn.length > 12){
+            this.humIn.shift();
+          }else {
+            this.humIn.push(parseFloat(message.payloadString));
+          }
           console.log('humidity_indoor :', message.payloadString);
           break;
         case "temperature_outdoor":
-          this.tempOut.push(parseFloat(message.payloadString));
+          if(this.tempOut.length > 12){
+            this.tempOut.shift();
+          }else {
+            this.tempOut.push(parseFloat(message.payloadString));
+          }
           console.log('temperature_outdoor :', message.payloadString);
           break;
         case "humidity_outdoor":
-          this.humOut.push(parseFloat(message.payloadString));
+          if(this.humOut.length > 12){
+            this.humOut.shift();
+          }else {
+            this.humOut.push(parseFloat(message.payloadString));
+          }
           console.log('humidity_outdoor :', message.payloadString);
           break;
           case "pressure":
-            //this.pressure = message.payloadString;
-            //$("#pressure").html(this.pressure+" hPa");
-            this.pressure.push(parseFloat(message.payloadString));
+            if(this.pressure.length > 12){
+              this.pressure.shift();
+            }else {
+              this.pressure.push(parseFloat(message.payloadString));
+            }
             console.log('pressure :', message.payloadString);
             break;
           case "wind":
-            //this.wind = message.payloadString;
-            //$("#wind").html(this.wind+" km/h");
-            this.wind.push(parseFloat(message.payloadString));
+            if(this.wind.length > 12){
+              this.wind.shift();
+            }else {
+              this.wind.push(parseFloat(message.payloadString));
+            }
             console.log('wind :', message.payloadString);
             break;
       }
