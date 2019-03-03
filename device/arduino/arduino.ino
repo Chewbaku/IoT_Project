@@ -74,7 +74,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 void loop() {
   //limit the sending of messages
-  if(millis() - lastMillis > 60000) {
+  if(millis() - lastMillis > 10000) {
   lastMillis = millis();
   client.publish("temperature_indoor", getTemp());
   client.publish("humidity_indoor", getHumidity());

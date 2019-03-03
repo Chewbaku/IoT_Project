@@ -23,7 +23,7 @@ while True:
 
         y = x["main"]
 
-        current_temperature = y["temp"]
+        current_temperature = round(y["temp"]-273.15, 2)
         table.append(current_temperature)
         current_pressure = y["pressure"]
         table.append(current_pressure)
@@ -84,4 +84,4 @@ while True:
     else:
         print(" City Not Found ")
 
-    time.sleep(60) #refresh each 20min
+    time.sleep(5) #refresh each 20min
