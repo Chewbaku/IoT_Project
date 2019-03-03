@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Météo</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    {{topic}}
+    {{message}}
+    <div v-for="(value) in tempIn">tempIn : {{tempIn}}</div>
+    <div v-for="(value) in humIn">humIn : {{humIn}}</div>
+    <div v-for="(value) in tempOut">tempOut : {{tempOut}}</div>
+    <div v-for="(value) in humOut">humOut : {{humOut}}</div>
+    <div v-for="(value) in pressure">pressure : {{pressure}}</div>
+    <div v-for="(value) in wind">wind : {{wind}}</div>
+    <div v-for="(value) in sunset">sunset :{{sunset}}</div>
+    <div v-for="(value) in sunrise">sunrise : {{sunrise}}</div>
+    <div v-for="(value) in sun_time">sun_time :{{sun_time}}</div>
+    <div v-for="(value) in weather">weather :{{weather}}</div>
+  </div>
+</body>
+<script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    topic:"",
+    message: 'waiting a message...',
+    client: '',
+    tempIn: [],
+    humIn: [],
+    tempOut: [],
+    humOut: [],
+    pressure: [],
+    wind: [],
+    sunset: [],
+    sunrise: [],
+    sun_time: [],
+    weather: []
+  },
+  mounted () {
+    this.client = new Paho.MQTT.Client("127.0.0.1", 61614, "clientId");
+    this.client.onConnectionLost = this.onConnectionLost;
+    this.client.onMessageArrived = this.onMessageArrived;
+    this.client.connect({ onSuccess: this.onConnect });
+  },
+  methods: {
+    onConnect() {
+      // Once a connection has been made, make a subscription and send a message.
+      console.log("onConnect");
+      this.client.subscribe("temperature_indoor");
+      this.client.subscribe("humidity_indoor");
+      this.client.subscribe("temperature_outdoor");
+      this.client.subscribe("humidity_outdoor");
+      this.client.subscribe("pressure");
+      this.client.subscribe("wind");
+      this.client.subscribe("sunset");
+      this.client.subscribe("sunrise");
+      this.client.subscribe("sun_time");
+      this.client.subscribe("weather_description");
+      message = new Paho.MQTT.Message("VueJSisConnected");
+      message.destinationName = "connexion";
+      this.client.send(message);
+    },
+
+    onConnectionLost(responseObject) {
+      if (responseObject.errorCode !== 0) {
+        console.log("onConnectionLost:" + responseObject.errorMessage);
+      }
+    },
+
+    onMessageArrived(message) {
+      this.topic = message.destinationName;
+      this.message = message.payloadString;
+
+      switch (this.topic) {
+        case "temperature_indoor":
+          this.tempIn.push(message.payloadString);
+          console.log('temperature_indoor :', message.payloadString);
+          break;
+        case "humidity_indoor":
+          this.humIn.push(message.payloadString);
+          console.log('humidity_indoor :', message.payloadString);
+          break;
+        case "temperature_outdoor":
+          this.tempOut.push(message.payloadString);
+          console.log('temperature_outdoor :', message.payloadString);
+          break;
+        case "humidity_outdoor":
+          this.humOut.push(message.payloadString);
+          console.log('humidity_outdoor :', message.payloadString);
+          break;
+        case "pressure":
+          this.pressure.push(message.payloadString);
+          console.log('pressure :', message.payloadString);
+          break;
+        case "wind":
+          this.wind.push(message.payloadString);
+          console.log('wind :', message.payloadString);
+          break;
+        case "sunset":
+          this.sunset.push(message.payloadString);
+          console.log('sunset :', message.payloadString);
+          break;
+        case "sunrise":
+          this.sunrise.push(message.payloadString);
+          console.log('sunrise :', message.payloadString);
+          break;
+        case "sun_time":
+          this.sun_time.push(message.payloadString);
+          console.log('sun_time :', message.payloadString);
+          break;
+        case "weather_description":
+          this.weather.push(message.payloadString);
+          console.log('weather_description :', message.payloadString);
+          break;
+        default:
+          console.log("Message cant be loaded");
+      }
+      //console.log("onMessageArrived:" + message.payloadString);
+    }
+  }
+})
+</script>
+</html>
