@@ -8,7 +8,6 @@ var app = new Vue({
     humIn: [],
     tempOut: [],
     humOut: [],
-    pressure: [],
     wind: [],
     sunset: '',
     sunrise: '',
@@ -29,7 +28,6 @@ var app = new Vue({
       this.client.subscribe("humidity_indoor");
       this.client.subscribe("temperature_outdoor");
       this.client.subscribe("humidity_outdoor");
-      this.client.subscribe("pressure");
       this.client.subscribe("wind");
       this.client.subscribe("sunset");
       this.client.subscribe("sunrise");
@@ -141,10 +139,6 @@ var app = new Vue({
                    {
                       name: 'Vent (km/h)',
                       data: app.wind
-                   },
-                   {
-                      name: 'Pression (hPa)',
-                      data: app.pressure
                    }
                    ];
 
@@ -162,7 +156,7 @@ var app = new Vue({
 
       switch (this.topic) {
         case "temperature_indoor":
-          if(this.tempIn.length > 12){
+          if(this.tempIn.length == 12){
             this.tempIn.shift();
           }else {
             this.tempIn.push(parseFloat(message.payloadString));
@@ -170,7 +164,7 @@ var app = new Vue({
           console.log('temperature_indoor :', message.payloadString);
           break;
         case "humidity_indoor":
-          if(this.humIn.length > 12){
+          if(this.humIn.length == 12){
             this.humIn.shift();
           }else {
             this.humIn.push(parseFloat(message.payloadString));
@@ -178,7 +172,7 @@ var app = new Vue({
           console.log('humidity_indoor :', message.payloadString);
           break;
         case "temperature_outdoor":
-          if(this.tempOut.length > 12){
+          if(this.tempOut.length == 12){
             this.tempOut.shift();
           }else {
             this.tempOut.push(parseFloat(message.payloadString));
@@ -186,23 +180,15 @@ var app = new Vue({
           console.log('temperature_outdoor :', message.payloadString);
           break;
         case "humidity_outdoor":
-          if(this.humOut.length > 12){
+          if(this.humOut.length == 12){
             this.humOut.shift();
           }else {
             this.humOut.push(parseFloat(message.payloadString));
           }
           console.log('humidity_outdoor :', message.payloadString);
           break;
-          case "pressure":
-            if(this.pressure.length > 12){
-              this.pressure.shift();
-            }else {
-              this.pressure.push(parseFloat(message.payloadString));
-            }
-            console.log('pressure :', message.payloadString);
-            break;
           case "wind":
-            if(this.wind.length > 12){
+            if(this.wind.length == 12){
               this.wind.shift();
             }else {
               this.wind.push(parseFloat(message.payloadString));

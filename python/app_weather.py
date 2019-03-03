@@ -74,7 +74,7 @@ while True:
 
         mqtt.single("temperature_outdoor", current_temperature)
         mqtt.single("humidity_outdoor", current_humidity)
-        mqtt.single("pressure", current_pressure)
+        #mqtt.single("pressure", current_pressure)
         mqtt.single("wind", current_wind)
         mqtt.single("sunset", sunset)
         mqtt.single("sunrise", sunrise)
