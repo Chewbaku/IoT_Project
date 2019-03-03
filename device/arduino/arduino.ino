@@ -74,14 +74,10 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
 void loop() {
   //limit the sending of messages
-  if(millis() - lastMillis > 1000) {
+  if(millis() - lastMillis > 60000) {
   lastMillis = millis();
-  client.publish("temperature", getTemp());
-  client.publish("humidity", getHumidity());
-  client.publish("pression", getPression());
-  client.publish("wind", getWind());
-  client.publish("sunrise", getSunrise());
-  client.publish("sunset", getSunset());
+  client.publish("temperature_indoor", getTemp());
+  client.publish("humidity_indoor", getHumidity());
   }
   client.loop();
 }
@@ -91,6 +87,7 @@ char* getTemp(){
   float t = dht.readTemperature();
   if (isnan(t)){
     Serial.println("Failed to read from DHT sensor!");
+    client.publish("temperature_indoor", "error");
   }else {
     String tmp = String(t);
     char* temperature = "";
@@ -103,38 +100,11 @@ char* getHumidity(){
   float t = dht.readHumidity();
   if (isnan(t)){
     Serial.println("Failed to read from DHT sensor!");
+    client.publish("humidity_indoor", "error");
   }else {
     String tmp = String(t);
     char* humidity = "";
     tmp.toCharArray(humidity, tmp.length()+1);
     return humidity;
   }
-}
-
-char* getPression(){
-  String tmp = String(random(1000, 1100));
-  char* pression = "";
-  tmp.toCharArray(pression, tmp.length()+1);
-  return pression;
-}
-
-char* getWind(){
-  String tmp = String(random(0, 150));
-  char* wind = "";
-  tmp.toCharArray(wind, tmp.length()+1);
-  return wind;
-}
-
-char* getSunset(){
-  String tmp = String(random(0, 100));
-  char* sunset = "";
-  tmp.toCharArray(sunset, tmp.length()+1);
-  return sunset;
-}
-
-char* getSunrise(){
-  String tmp = String(random(0, 150));
-  char* sunrise = "";
-  tmp.toCharArray(sunrise, tmp.length()+1);
-return sunrise;
 }
