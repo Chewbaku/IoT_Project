@@ -1,4 +1,6 @@
-#container{
-  display: flex;
-  flex-wrap: nowrap;
+#app {
+  position: relative;
+  margin-top: 25%;
+  left: 35%;
+  background-color: white;
 }

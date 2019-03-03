@@ -66,7 +66,36 @@ var app = new Vue({
           break;
         case "weather_description":
            this.weather = message.payloadString;
-           $("#weather").html(this.weather);
+           switch (this.weather) {
+             case "clear sky":
+               $("#weather").attr('src', "assets/01d.png");
+               break;
+             case "few clouds":
+                 $("#weather").attr('src', "assets/02d.png");
+                 break;
+             case "scattered clouds":
+               $("#weather").attr('src', "assets/03d.png");
+               break;
+             case "broken clouds":
+                 $("#weather").attr('src', "assets/04d.png");
+                 break;
+             case "shower rain":
+               $("#weather").attr('src', "assets/09d.png");
+               break;
+             case "rain":
+                 $("#weather").attr('src', "assets/10d.png");
+                 break;
+             case "thunderstorm":
+               $("#weather").attr('src', "assets/11d.png");
+               break;
+             case "snow":
+                 $("#weather").attr('src', "assets/13d.png");
+                 break;
+             case "mist":
+                 $("#weather").attr('src', "assets/50d.png");
+                 break;
+             default:
+           }
           console.log('weather_description :', message.payloadString);
           break;
         default:
