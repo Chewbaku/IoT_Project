@@ -8,8 +8,8 @@ var app = new Vue({
     humIn: [],
     tempOut: [],
     humOut: [],
-    pressure: '',
-    wind: '',
+    pressure: [],
+    wind: [],
     sunset: '',
     sunrise: '',
     sun_time: '',
@@ -49,16 +49,6 @@ var app = new Vue({
       this.topic = message.destinationName;
       this.message = message.payloadString;
       switch (this.topic) {
-        case "pressure":
-          this.pressure = message.payloadString;
-          $("#pressure").html(this.pressure+" hPa");
-          console.log('pressure :', message.payloadString);
-          break;
-        case "wind":
-          this.wind = message.payloadString;
-          $("#wind").html(this.wind+" km/h");
-          console.log('wind :', message.payloadString);
-          break;
         case "sunset":
           this.sunset = message.payloadString;
           $("#sunset").html(this.sunset);
@@ -82,18 +72,15 @@ var app = new Vue({
         default:
         $(document).ready(function() {
                    var title = {
-                      text: 'Temperature and Humidity Historic'
+                      text: 'Données météorologiques de Lille'
                    };
                    var subtitle = {
-                      text: 'Noémie Boillot - Anthony Carlier - Romain Ceccotti - Thibault Demylle'
+                      text: 'Résumé des 12 dernières mesures'
                    };
                    var xAxis = {
                       categories: []
                    };
                    var yAxis = {
-                      title: {
-                         text: 'Temperature (\xB0C)'
-                      },
                       plotLines: [{
                          value: 0,
                          width: 1,
@@ -101,9 +88,6 @@ var app = new Vue({
                       }]
                    };
 
-                   var tooltip = {
-                      valueSuffix: '\xB0C'
-                   }
                    var legend = {
                       layout: 'vertical',
                       align: 'right',
@@ -111,20 +95,28 @@ var app = new Vue({
                       borderWidth: 0
                    };
                    var series =  [{
-                         name: 'Outside Temperature',
-                         data: app.tempOut},
-                         {
-                            name: 'Temperature in the house',
-                            data: app.tempIn
-                         },
-                      {
-                         name: 'Humidity in the house',
-                         data: app.humIn
-                      },
-                      {
-                         name: 'Outside Humidity',
-                         data: app.humOut
-                      }
+                     name: 'Température Extérieure (\xB0C)',
+                     data: app.tempOut},
+                   {
+                      name: 'Température Intérieure (\xB0C)',
+                      data: app.tempIn
+                   },
+                   {
+                      name: 'Humidité Intérieure (%)',
+                      data: app.humIn
+                   },
+                   {
+                      name: 'Humidité Extérieure (%)',
+                      data: app.humOut
+                   },
+                   {
+                      name: 'Vent (km/h)',
+                      data: app.wind
+                   },
+                   {
+                      name: 'Pression (hPa)',
+                      data: app.pressure
+                   }
                    ];
 
                    var json = {};
@@ -132,7 +124,6 @@ var app = new Vue({
                    json.subtitle = subtitle;
                    json.xAxis = xAxis;
                    json.yAxis = yAxis;
-                   json.tooltip = tooltip;
                    json.legend = legend;
                    json.series = series;
 
@@ -157,6 +148,18 @@ var app = new Vue({
           this.humOut.push(parseFloat(message.payloadString));
           console.log('humidity_outdoor :', message.payloadString);
           break;
+          case "pressure":
+            //this.pressure = message.payloadString;
+            //$("#pressure").html(this.pressure+" hPa");
+            this.pressure.push(parseFloat(message.payloadString));
+            console.log('pressure :', message.payloadString);
+            break;
+          case "wind":
+            //this.wind = message.payloadString;
+            //$("#wind").html(this.wind+" km/h");
+            this.wind.push(parseFloat(message.payloadString));
+            console.log('wind :', message.payloadString);
+            break;
       }
     }
   }
